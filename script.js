@@ -6,7 +6,10 @@ document.addEventListener("DOMContentLoaded", function ()
 	const colorInput = document.getElementById("color-input");
 
 	// TODO: Load the note color from the local storage.
-	let noteColor = null; // Stores the selected note color from the form.
+	// If no color is found, set the default color to white.
+	
+	let noteColor = localStorage.getItem("noteColor") || "white";
+
 	// TODO: Load the note ID counter from the local storage.
 	let noteIdCounter = 0; // Counter for assigning unique IDs to new notes.
 
