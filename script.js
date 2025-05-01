@@ -10,11 +10,24 @@ document.addEventListener("DOMContentLoaded", function ()
 	localStorage.setItem("noteColor", "white");
 	let noteColor = localStorage.getItem("noteColor") || "white";
 
-	// TODO: Load the note ID counter from the local storage.
-	let noteIdCounter = parseInt(localStorage.getItem("noteIDCounter")) || 1;
-	localStorage.setItem("noteIDCounter", noteIdCounter);
 
-	// TODO: Load the notes from the local storage.
+	// TODO: Load the note ID counter from the local storage.
+	let noteIdCounter = parseInt(localStorage.getItem("noteIdCounter")) || 1;
+	localStorage.setItem("noteIdCounter", noteIdCounter);
+
+	// TODO: Load the notes from the local storage. // using JSON.parse
+	
+	const savedNotes = JSON.parse(localStorage.getItem("notes")) || []; 
+	for (const noteData of savedNotes) {
+		const note = document.createElement("textarea");
+		note.setAttribute("data-note-id", noteData.id);
+		note.value = noteData.content;
+		note.className = "note";
+		note.style.backgroundColor = noteColor;
+		noteContainer.appendChild(note); 
+	}
+
+
 
 	function addNewNote ()
 	{
@@ -30,7 +43,17 @@ document.addEventListener("DOMContentLoaded", function ()
 
 		noteIdCounter++; // Increments the counter since the ID is used for this note.
 
+
 		// TODO: Add new note to the saved notes in the local storage.
+
+		const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+		savedNotes.push({ id: id, content: content }); 
+
+		localStorage.setItem("notes", JSON.stringify(savedNotes));
+		localStorage.setItem("noteIdCounter", noteIdCounter);
+
+
+
 	}
 
 	colorForm.addEventListener("submit", function (event)
