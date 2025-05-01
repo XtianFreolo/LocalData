@@ -7,11 +7,12 @@ document.addEventListener("DOMContentLoaded", function ()
 
 	// TODO: Load the note color from the local storage.
 	// If no color is found, set the default color to white.
-	
+	localStorage.setItem("noteColor", "white");
 	let noteColor = localStorage.getItem("noteColor") || "white";
 
 	// TODO: Load the note ID counter from the local storage.
-	let noteIdCounter = 0; // Counter for assigning unique IDs to new notes.
+	let noteIdCounter = parseInt(localStorage.getItem("noteIDCounter")) || 1;
+	localStorage.setItem("noteIDCounter", noteIdCounter);
 
 	// TODO: Load the notes from the local storage.
 
