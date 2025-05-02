@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// TODO: Load the notes from the local storage. // using JSON.parse
 
-	const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+	let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
 
 	for (const noteData of savedNotes) {
 		const note = document.createElement("textarea");
@@ -73,6 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		noteColor = newColor; // Updates the stored note color with the new selection.
 
 		// TODO: Update the note color in the local storage.
+		localStorage.setItem("noteColor", noteColor);
 	});
 
 	newNoteButton.addEventListener("click", function () {
@@ -84,12 +85,30 @@ document.addEventListener("DOMContentLoaded", function () {
 			event.target.remove(); // Removes the clicked note.
 
 			// TODO: Delete the note from the saved notes in the local storage.
+			const noteId = parseInt(event.target.getAttribute("data-note-id"));
+			let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+			savedNotes = savedNotes.filter(note => note.id !== noteId !== noteId);
+			localStorage.setItem("notes", JSON.stringify(savedNotes));
 		}
+
 	});
+
 
 	noteContainer.addEventListener("blur", function (event) {
 		if (event.target.classList.contains("note")) {
 			// TODO: Update the note from the saved notes in the local storage.
+
+			const noteId = parseInt(event.target.getAttribute("data-note-id"));
+			const newContent = event.target.value;
+
+			const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+			const noteToUpdate = savedNotes.find(note => note.id === noteId);
+
+			if (noteToUpdate) {
+				noteToUpdate.content = newContent;
+				localStorage.setItem("notes", JSON.stringify(savedNotes));
+			}
+
 		}
 	}, true);
 
