@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	let noteColor = localStorage.getItem("noteColor");
 	if (!noteColor) {
 		noteColor = "white";
-		localStorage.set("noteColor", noteColor);
+		localStorage.setItem("noteColor", noteColor);
 	}
 
 
@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		note.setAttribute("data-note-id", noteData.id);
 		note.value = noteData.content;
 		note.className = "note";
-		note.style.backgroundColor = noteColor;
+		note.style.backgroundColor = noteData.color || noteColor;
 		noteContainer.appendChild(note);
 	}
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// TODO: Add new note to the saved notes in the local storage.
 
 		const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-		savedNotes.push({ id: id, content: content });
+		savedNotes.push({ id: id, content: content, color: noteColor });
 
 		localStorage.setItem("notes", JSON.stringify(savedNotes));
 		localStorage.setItem("noteIdCounter", noteIdCounter);
@@ -73,7 +73,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		noteColor = newColor; // Updates the stored note color with the new selection.
 
 		// TODO: Update the note color in the local storage.
-		localStorage.setItem("noteColor", noteColor);
+		let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
+		savedNotes = savedNotes.map(note => {
+			return { ...note, color: newColor }; // ✅ Updates color for all saved notes
+		});
+		localStorage.setItem("notes", JSON.stringify(savedNotes));
+
 	});
 
 	newNoteButton.addEventListener("click", function () {
