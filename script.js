@@ -98,18 +98,19 @@ document.addEventListener("DOMContentLoaded", function () {
 		if (event.target.classList.contains("note")) {
 			// TODO: Update the note from the saved notes in the local storage.
 
-			const noteId = parseInt(event.target.getAttribute("data-note-id"));
-			const newContent = event.target.value;
+			const idToUpdate = parseInt(event.target.getAttribute("data-note-id"));
+			const updatedContent = event.target.value;
 
 			const savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-			const noteToUpdate = savedNotes.find(note => note.id === noteId);
-
-			if (noteToUpdate) {
-				noteToUpdate.content = newContent;
-				localStorage.setItem("notes", JSON.stringify(savedNotes));
+			for (let note of savedNotes) {
+				if (note.id === idToUpdate) {
+					note.content = updatedContent;
+					break;
+				}
 			}
-
+			localStorage.setItem("notes", JSON.stringify(savedNotes));
 		}
+
 	}, true);
 
 	window.addEventListener("keydown", function (event) {
