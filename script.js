@@ -85,9 +85,9 @@ document.addEventListener("DOMContentLoaded", function () {
 			event.target.remove(); // Removes the clicked note.
 
 			// TODO: Delete the note from the saved notes in the local storage.
-			const noteId = parseInt(event.target.getAttribute("data-note-id"));
+			const idToDelete = parseInt(event.target.getAttribute("data-note-id"));
 			let savedNotes = JSON.parse(localStorage.getItem("notes")) || [];
-			savedNotes = savedNotes.filter(note => note.id !== noteId !== noteId);
+			savedNotes = savedNotes.filter(note => note.id !== idToDelete);
 			localStorage.setItem("notes", JSON.stringify(savedNotes));
 		}
 
